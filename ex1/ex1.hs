@@ -656,12 +656,12 @@ outputs []      = End
    find a mismatch! -}
 
 notExpects :: [Bool] -> Process
-notExpects [] = (Output False End)
+notExpects []     = (Output False End)
 notExpects (x:xs) = Input (notExpects xs) (notExpects xs)
 
 expects :: [Bool] -> Process
-expects [] = (Output True End)
-expects (x:xs) = if (x == True) then (Input (expects xs) (notExpects xs)) else (Input (notExpects xs) (expects xs))
+expects []      = (Output True End)
+expects (x:xs)  = if (x == True) then (Input (expects xs) (notExpects xs)) else (Input (notExpects xs) (expects xs))
 
 {- 2.3.4 Sequencing processes. Write a function which combines two
    processes in sequence, so that the second begins once the first has
@@ -670,9 +670,9 @@ expects (x:xs) = if (x == True) then (Input (expects xs) (notExpects xs)) else (
    this function is very similar to 'append'. -}
 
 sequ :: Process -> Process -> Process
-sequ End p1           = p1
+sequ End p1             = p1
 sequ (Output b1 p1) p2  = Output b1 (sequ p1 p2)
-sequ (Input p1 p2) p3  = Input (sequ p1 p3) (sequ p2 p3)
+sequ (Input p1 p2) p3   = Input (sequ p1 p3) (sequ p2 p3)
 
 {- To check that you've got it right, make sure that
 
