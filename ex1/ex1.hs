@@ -120,14 +120,14 @@ joinWith a (x:xs)  = x ++ [a] ++ (joinWith a xs)
 splitOn :: Eq a => a -> [a] -> [[a]]
 splitOn splitChar xs = splitOnHelper splitChar [] xs
 
-reverseOrder :: [a] -> [a]
-reverseOrder []         = []
-reverseOrder (x:xs)     = reverseOrder xs ++ [x]
+rev :: [a] -> [a]
+rev []         = []
+rev (x:xs)     = rev xs ++ [x]
 
 splitOnHelper :: Eq a => a -> [a] -> [a] -> [[a]]
-splitOnHelper s group []       = [reverseOrder group]
-splitOnHelper s [] (x:xs)   = if s == x then [[]] ++ splitOnHelper s [] xs else splitOnHelper s [x] xs
-splitOnHelper s group (x:xs)   = if s == x then [reverseOrder group] ++ splitOnHelper s [] xs else splitOnHelper s (x:group) xs
+splitOnHelper s group []        = [rev group]
+splitOnHelper s [] (x:xs)       = if (s == x) then ([[]] ++ splitOnHelper s [] xs) else (splitOnHelper s [x] xs)
+splitOnHelper s group (x:xs)    = if (s == x) then ([rev group] ++ splitOnHelper s [] xs) else (splitOnHelper s (x:group) xs)
 
 
 {- HINT: 'splitOnHelper' works by gathering elements of the input list
@@ -187,7 +187,7 @@ data Tree a
    -- Middle leaf doesn't hold any data (b)
 
 elements :: Tree a -> [a]
-elements (Node (a) (b) (c)) = elements a ++ [b] ++ elements c
+elements (Node (a) (b) (c))   = elements a ++ [b] ++ elements c
 elements (Leaf)               = []
 
 {- Examples:
@@ -213,7 +213,7 @@ elements (Leaf)               = []
 
 
 eqFindInTree :: Eq a => a -> Tree a -> Bool
-eqFindInTree x (Node (a) (b) (c)) = if(x==b) then True
+eqFindInTree x (Node (a) (b) (c)) = if (x==b) then True
                                     else if (eqFindInTree x (a) || eqFindInTree x (c)) then True
                                     else False
 eqFindInTree x (Leaf)             = False
@@ -431,8 +431,8 @@ backspace (Within (x:xs) point after)      = (Within xs point after)
 
 
 searchRightFor :: Char -> Cursor -> Cursor
-searchRightFor searchChar (Within before point after)   =   if(Just searchChar == getPoint(Within before point after)) then Within before point after
-                                                          else searchRightFor searchChar (moveRight(Within before point after))
+searchRightFor searchChar (Within before point after)   =   if (Just searchChar == getPoint(Within before point after)) then (Within before point after)
+                                                            else (searchRightFor searchChar (moveRight(Within before point after)))
 searchRightFor searchChar (AtEnd before)                = (AtEnd before)
 {- 2 MARKS -}
 
